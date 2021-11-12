@@ -1,21 +1,11 @@
-const dotenv = require('dotenv')
-
-const result = dotenv.config()
-
-if (result.error) {
-    throw result.error
-  }
-  
-  console.log(result)
+require('dotenv').config()
 
 const express = require('express')
 const cors = require('cors')
 const userRouter = require('./routers/userRouter')
 const mongoose = require('mongoose')
 
-const userModel = require('./models/userModel')
 
-const uemail = "evieswelch@gmail.com"
 
 mongoose
     .connect(process.env.DB_CONN_STRING, { useNewUrlParser: true })
@@ -26,7 +16,7 @@ mongoose
 
 
 const app = express()
-const apiPort = 42069
+const apiPort = process.env.API_PORT
 
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
@@ -37,9 +27,3 @@ app.get('/', (req, res) => {
 })
 app.use("/api", userRouter)
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
-
-// const t = async () => {
-//     const d = await userModel.findOne({email: uemail})
-//     console.log(d)
-// }
-// t()
